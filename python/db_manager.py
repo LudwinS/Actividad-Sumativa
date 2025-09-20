@@ -4,7 +4,6 @@ DB_NAME = "gastos.db"
 
 # -------------------- Conexión --------------------
 def get_connection():
-    """Devuelve la conexión a la base de datos."""
     return sqlite3.connect(DB_NAME)
 
 # -------------------- Crear Tablas --------------------
@@ -60,10 +59,31 @@ def insert_usuario(nombre, ingreso, ahorro_porcentaje):
     conn.commit()
     conn.close()
 
+# Nuevo: inserta y devuelve id
+def insert_usuario_return_id(nombre, ingreso, ahorro_porcentaje):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
+    INSERT INTO usuarios (nombre, ingreso, ahorro_porcentaje)
+    VALUES (?, ?, ?)
+    """, (nombre, ingreso, ahorro_porcentaje))
+    conn.commit()
+    last_id = cursor.lastrowid
+    conn.close()
+    return last_id
+
 def get_usuario(usuario_id):
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM usuarios WHERE id = ?", (usuario_id,))
+    usuario = cursor.fetchone()
+    conn.close()
+    return usuario
+
+def get_usuario_por_nombre(nombre):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM usuarios WHERE nombre = ?", (nombre,))
     usuario = cursor.fetchone()
     conn.close()
     return usuario
@@ -106,6 +126,14 @@ def get_gastos_fijos(usuario_id):
     conn.close()
     return gastos
 
+def total_gastos_fijos(usuario_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT COALESCE(SUM(monto),0) FROM gastos_fijos WHERE usuario_id = ?", (usuario_id,))
+    s = cursor.fetchone()[0]
+    conn.close()
+    return s
+
 def update_gasto_fijo(gasto_id, categoria, monto):
     conn = get_connection()
     cursor = conn.cursor()
@@ -144,6 +172,14 @@ def get_gastos_variables(usuario_id):
     conn.close()
     return gastos
 
+def total_gastos_variables(usuario_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT COALESCE(SUM(monto),0) FROM gastos_variables WHERE usuario_id = ?", (usuario_id,))
+    s = cursor.fetchone()[0]
+    conn.close()
+    return s
+
 def update_gasto_variable(gasto_id, categoria, monto, fecha):
     conn = get_connection()
     cursor = conn.cursor()
@@ -161,3 +197,16 @@ def delete_gasto_variable(gasto_id):
     cursor.execute("DELETE FROM gastos_variables WHERE id = ?", (gasto_id,))
     conn.commit()
     conn.close()
+
+
+def get_all_usuarios():
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM usuarios")
+    rows = cursor.fetchall()
+    conn.close()
+    return rows
+
+# Crear las tablas al importar el módulo y crear la conexión
+get_connection()
+create_tables()
