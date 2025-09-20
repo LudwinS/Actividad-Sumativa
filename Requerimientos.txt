@@ -1,0 +1,20 @@
+Se neceesitara hacer distintos modulos para poder resolver este ejercicio de 
+forma ordenada y optima
+
+Se necesita que la aplicacion sea capaz de recibir los datos de gastos de los 
+usuarios y usarlos para realizar analisis de los gastos, que se guarden todos los 
+datos en un documento de texto, con el nombre de usuario y ahi todos los datos de 
+cuanto gana, cuales son los gastos fijos que tiene, asi como tambien los gastos que 
+pueden llegar a cambiar. Tambien debe contener una funcionalidad para que se pueda
+definir cuato de ahorro se quiere tener, se debe manejar con porcentuajes.
+
+Modulos necesarios
+- Funciones
+- Clases
+- Widgets
+- Main
+
+Funciones necesarias
+- Calcular presupuesto, para esat funcion se debe tomar en cuenta los gastos fijos
+para restarlos de una sola vez
+- Funcion para calcular el ahorro
