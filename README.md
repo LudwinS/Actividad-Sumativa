@@ -2,7 +2,9 @@
 Esta es la resolucion a la actividad de programacion computacional
 
 # Ludwin Saul Vasquez Romero
-# SMSS034624
+
+# Katherin Milagro Guevara Coca
+
 
 # Nombre de la aplicacion
 Control de Gastos Personales
